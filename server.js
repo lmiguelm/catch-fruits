@@ -12,8 +12,18 @@ const io = socketio(server);
 
 import game from './public/game';
 
-io.on('connection', socket => {
+const path = require('path');
 
+app.use(express.static(path.join(__dirname, 'public')));
+app.set('views', path.join(__dirname, 'public'));
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+
+app.get('/', (req, res) => {
+  res.render('index.html');
+});
+
+io.on('connection', socket => {
 
   const playerId = socket.id;
   socket.emit('connection', playerId);
@@ -41,6 +51,5 @@ io.on('connection', socket => {
 }); 
 
 
-app.use(express.static('public'));
 
 server.listen(3333);
