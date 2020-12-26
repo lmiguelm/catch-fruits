@@ -43,6 +43,8 @@ io.on('connection', socket => {
   });
 
   socket.on('colision', () => {
+    console.log(game.state.screen.height);
+    console.log(game.state.screen.width);
     const fruit = {
       x: Math.floor(Math.random() * game.state.screen.width),
       y: Math.floor(Math.random() * game.state.screen.height),

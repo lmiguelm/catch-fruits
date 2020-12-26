@@ -10,8 +10,8 @@ const game = {
       }
     },
     screen: {
-      height: 50,
-      width: 50,
+      height: 100,
+      width: 100,
     },
     currentPlayer: ''
   },
@@ -25,24 +25,8 @@ const game = {
       y:  Math.floor(Math.random() * game.state.screen.height),
       score: 0
     }
-
-    console.log(game.state.players);
-
     return game.state.players
   },
-
-
-  // addFruit() {
-  //   const fruitId = Math.floor(Math.random() * 10000000);
-
-  //   game.state.fruits[fruitId] = {
-      
-  //     x:  Math.floor(Math.random() * game.state.screen.width),
-  //     y:  Math.floor(Math.random() * game.state.screen.height),
-  //   }
-
-  //   return game.state.fruits;
-  // },
 
   disconnectPlayer(playerId) {
     delete game.state.players[playerId];
@@ -121,9 +105,18 @@ const game = {
     if(player.x == fruit.x && player.y == fruit.y) {
       player.score += 1;
       game.renderScore();
+      game.audio();
+
       return true;
     }
     return false;
+  },
+
+  async audio() {
+    const file = `./assets/audios/success.mp3?cb=${new Date().getTime()}`;
+    const audio = new Audio(file);
+    audio.load();
+    await audio.play()
   },
 
   renderScore() {
@@ -138,7 +131,7 @@ const game = {
       let tr = document.createElement('tr');
       
       if(playerId == game.state.currentPlayer) {
-        tr.style.color = 'red';
+        tr.style.color = '#daa520';
       }
 
       let player = document.createElement('td');
