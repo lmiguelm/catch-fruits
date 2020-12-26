@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles.css">
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <canvas id="game" height="50" width="50"></canvas>
+      <table>
+        <tr>
+          <th>Jogador</th>
+          <th>Pontuação</th>
+        </tr>
+
+        <tbody id="score-container">
+
+        </tbody>
+      </table>
+    </div>
+  </body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
+  <script type="module">
+    import game from './game.js';
+    
+    const screen =  document.getElementById('game');
+
+    const socket = io();
+
+    socket.on('connection', playerId => {
+      game.state.currentPlayer = playerId;
+      document.addEventListener('keydown', () => {
+        const colision = game.keyboardListener(event);
+        socket.emit('move-player', game.state.players[game.state.currentPlayer]);
+        
+        if(colision) {
+          socket.emit('colision', game.state.players[game.state.currentPlayer] );
+        }
+
+      });
+      
+      game.render(screen, game.state);
+      game.renderScore();
+    });
+
+    socket.on('new-player', players => {
+      game.state.players = players;
+      console.log(game.state.players)
+      game.render(screen, game.state);
+      game.renderScore();
+    });
+
+    socket.on('move-player', player => {
+      game.state.players[player.playerId] = { x: player.x, y: player.y, score: player.score };
+      game.render(screen, game.state);
+    });
+
+    socket.on('move-fruit', fruit => {
+      console.log(fruit);
+      game.state.fruits["fruit1"] = fruit;
+      game.render(screen, game.state);
+      game.renderScore();
+    });
+
+
+    socket.on('disconnect-player', players => {
+      game.state.players = players;
+      game.render(screen, game.state);
+      game.renderScore();
+    });
+
+  </script>
+</html>
