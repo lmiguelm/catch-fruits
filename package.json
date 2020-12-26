@@ -15,6 +15,6 @@
   },
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "sucrase-node server.js"
   }
 }
