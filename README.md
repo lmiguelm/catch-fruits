@@ -1,7 +1,7 @@
 
 # 🍓 Pegue a fruta
 
-![whatsapp](.github/catch-fruit.gif)
+![catch-fruits](.github/catch-fruit.gif)
 
 ## 🎯 Jogue agora
 Disponível [aqui](https://catch-fruits.herokuapp.com/ "https://catch-fruits.herokuapp.com/")
